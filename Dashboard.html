@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema Escolar</title>
+    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-header"><h3><i class="fa-solid fa-school"></i> Sistema Escolar</h3></div>
+            <div class="user-profile"><p id="userName"></p><small id="userRole"></small></div>
+            <div class="sidebar-actions hidden" id="admin-actions">
+                <button id="btn-hard-reset" title="Borrar TODOS los datos y empezar de cero">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Reinicio Total
+                </button>
+            </div>
+            <ul class="menu-options">
+                <li class="active"><a href="#" data-view="home"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                <li id="menu-alumnos"><a href="#" data-view="alumnos"><i class="fa-solid fa-user-graduate"></i> Alumnos</a></li>
+                <li id="menu-asistencia"><a href="#" data-view="asistencia"><i class="fa-solid fa-clipboard-user"></i> Asistencia</a></li>
+                <li class="hidden" id="menu-usuarios"><a href="#" data-view="usuarios"><i class="fa-solid fa-users-cog"></i> Usuarios</a></li>
+                <li id="menu-perfil"><a href="#" data-view="perfil"><i class="fa-solid fa-id-card"></i> Mi Perfil</a></li>
+                <li><a href="#" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div id="view-home" class="view active">
+                <header class="main-header">
+                    <h1>Dashboard de Inicio</h1>
+                    <div class="header-actions hidden" id="maestro-stats-filter">
+                        <label for="grupo-select-stats" style="font-weight: 600;">Mostrando datos del salón:</label>
+                        <select id="grupo-select-stats"></select>
+                    </div>
+                </header>
+                <div class="stats-cards">
+                    <div class="card"><div class="card-icon"><i class="fa-solid fa-users"></i></div><div class="card-info"><p>Total de Alumnos</p><h2 id="total-alumnos">0</h2></div></div>
+                    <div class="card"><div class="card-icon"><i class="fa-solid fa-percent"></i></div><div class="card-info"><p>Asistencia Hoy</p><h2 id="porcentaje-asistencia">0%</h2></div></div>
+                    <div class="card"><div class="card-icon"><i class="fa-solid fa-clock"></i></div><div class="card-info"><p>Retardos Hoy</p><h2 id="total-retardos">0</h2></div></div>
+                </div>
+                <div class="content-body recent-records hidden" id="activity-log-container">
+                    <header class="main-header"><h3><i class="fa-solid fa-timeline"></i> Actividad Reciente</h3></header>
+                    <ul id="activity-log-list" class="activity-log" style="list-style-type: none; padding-left: 0;"></ul>
+                </div>
+            </div>
+
+            <div id="view-alumnos" class="view">
+                <header class="main-header">
+                    <h1>Gestión de Alumnos</h1>
+                    <div class="header-actions" id="alumnos-actions">
+                        <select id="grupo-select-alumnos"></select>
+                        <button id="btn-add-grupo" class="btn-primary"><i class="fa-solid fa-plus"></i> Nuevo Salón</button>
+                        <button id="btn-delete-grupo" class="btn-danger"><i class="fa-solid fa-trash"></i> Eliminar Salón</button>
+                        <button id="btn-edit-grupo" class="btn-primary"><i class="fa-solid fa-pen-to-square"></i> Editar Salón</button>
+                        <button id="btn-add-alumno" class="btn-primary"><i class="fa-solid fa-user-plus"></i> Agregar Alumno</button>
+                    </div>
+                </header>
+                <div class="content-body"><table class="data-table"><thead><tr><th>Matrícula / Núm. Lista</th><th>Nombre(s)</th><th>Apellido Paterno</th><th>Apellido Materno</th><th id="th-acciones-alumnos">Acciones</th></tr></thead><tbody id="alumnos-tbody"></tbody></table></div>
+            </div>
+            <div id="view-asistencia" class="view"><header class="main-header"><h1>Registro de Asistencia</h1><div class="header-actions"><select id="grupo-select-asistencia"></select><input type="date" id="fecha-asistencia"><button id="btn-download-asistencia" class="btn-primary"><i class="fa-solid fa-download"></i> Descargar</button></div></header><div class="content-body"><table class="data-table attendance-table"><thead><tr><th>Matrícula / Núm. Lista</th><th>Nombre Completo</th><th>Estatus</th><th>Observaciones</th></tr></thead><tbody id="asistencia-tbody"></tbody></table></div></div>
+            
+            <div id="view-usuarios" class="view">
+                <header class="main-header"><h1>Gestión de Usuarios</h1></header>
+                <div class="content-body"><table class="data-table"><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th id="th-grupos-usuarios" class="hidden">Grupos Asignados</th><th id="th-acciones-usuarios" class="hidden">Acciones</th></tr></thead><tbody id="usuarios-tbody"></tbody></table></div>
+            </div>
+            <div id="view-perfil" class="view"><header class="main-header"><h1>Mi Perfil</h1></header><div class="content-body"><div class="form-container"><h3>Actualizar Información Personal</h3><form id="form-update-profile"><label for="profile-name">Nombre Completo:</label><input type="text" id="profile-name" required><label for="profile-email">Correo Electrónico (no se puede cambiar):</label><input type="email" id="profile-email" readonly disabled><button type="submit">Guardar Cambios</button></form></div><div class="form-container"><h3>Cambiar Contraseña</h3><form id="form-change-password"><label for="current-password">Contraseña Actual:</label><input type="password" id="current-password" required><label for="new-password">Nueva Contraseña:</label><input type="password" id="new-password" required><label for="confirm-password">Confirmar Nueva Contraseña:</label><input type="password" id="confirm-password" required><button type="submit">Cambiar Contraseña</button><a href="#" id="recover-password-link" class="recovery-link">No recuerdo mi contraseña actual</a></form></div></div></div>
+        </main>
+    </div>
+
+    <div id="modal-alumno" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="modal-title">Agregar Alumno</h2>
+            <form id="form-alumno">
+                <input type="hidden" id="alumno-id">
+                <label for="alumno-matricula">Matrícula / Núm. de Lista:</label>
+                <input type="text" id="alumno-matricula" required>
+                <label for="alumno-nombre">Nombre(s):</label>
+                <input type="text" id="alumno-nombre" required>
+                <label for="alumno-paterno">Apellido Paterno:</label>
+                <input type="text" id="alumno-paterno" required>
+                <label for="alumno-materno">Apellido Materno:</label>
+                <input type="text" id="alumno-materno" required>
+                <div class="modal-actions">
+                    <button type="submit">Guardar</button>
+                    <button type="button" class="btn-cancel-modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="modal-assign-groups" class="modal-overlay hidden"><div class="modal-content"><h2 id="modal-assign-title">Asignar Grupos a: </h2><form id="form-assign-groups"><div id="groups-checkbox-container"></div><div class="modal-actions"><button type="submit">Guardar Asignaciones</button><button type="button" class="btn-cancel-modal">Cancelar</button></div></form></div></div>
+    
+    <script src="Dashboard.js"></script>
+</body>
+</html>

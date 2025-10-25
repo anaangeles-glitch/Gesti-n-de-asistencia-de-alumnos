@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Interactivo</title>
+    <link rel="stylesheet" href="Login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="container" id="authContainer">
+        <div class="form-container">
+            <div class="tabs">
+                <button id="btnLoginTab" class="tab-button active">Iniciar Sesión</button>
+                <button id="btnRegisterTab" class="tab-button">Registrarse</button>
+            </div>
+
+            <form id="loginForm" class="form active">
+                <h2>Iniciar Sesión</h2>
+                <div class="input-group">
+                    <label for="emailLogin">Correo Electrónico</label>
+                    <input type="email" id="emailLogin" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="passwordLogin">Contraseña</label>
+                    <div class="password-box">
+                        <input type="password" id="passwordLogin" required>
+                        <i class="fa-solid fa-eye" onclick="togglePassword('passwordLogin')"></i>
+                    </div>
+                </div>
+                <div class="options">
+                    <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
+                </div>
+                <button type="submit">Entrar</button>
+            </form>
+
+            <form id="registerForm" class="form">
+                <h2>Crear Cuenta</h2>
+                <div class="input-group">
+                    <label for="fullName">Nombre Completo</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="input-group">
+                    <label for="emailRegister">Correo Electrónico</label>
+                    <input type="email" id="emailRegister" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="passwordRegister">Contraseña</label>
+                    <div class="password-box">
+                        <input type="password" id="passwordRegister" required>
+                        <i class="fa-solid fa-eye" onclick="togglePassword('passwordRegister')"></i>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="confirmPassword">Confirmar Contraseña</label>
+                    <div class="password-box">
+                        <input type="password" id="confirmPassword" required>
+                        <i class="fa-solid fa-eye" onclick="togglePassword('confirmPassword')"></i>
+                    </div>
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container hidden" id="profileView">
+        <div class="profile-header">
+            <h2 id="profileName"></h2>
+            <p id="profileRole"></p>
+        </div>
+        
+        <div id="adminPanel" class="hidden">
+            <h3>Panel de Administración de Usuarios</h3>
+            <ul id="userList">
+                </ul>
+        </div>
+        
+        <button id="btnLogout">Cerrar Sesión</button>
+    </div>
+    <script src="Login.js"></script>
+</body>
+</html>
